@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Travel Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: url('https://static.vecteezy.com/system/resources/thumbnails/007/313/283/small/top-view-travelers-planning-in-holidays-for-vacation-trip-with-map-travel-concept-background-free-photo.jpg') no-repeat center center/cover;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .button-hover {
+            transition: all 0.3s ease-in-out;
+        }
+        .button-hover:hover {
+            transform: scale(1.05);
+        }
+        .loading {
+            display: none;
+            font-size: 1.2rem;
+            color: white;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="glass shadow-lg max-w-2xl w-full text-center p-8">
+        <h1 class="text-3xl font-extrabold text-white mb-4">AI Travel Planner</h1>
+        
+        <button id="startButton" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 button-hover">Start Planning</button>
+        
+        <div id="formContainer" class="mt-6 hidden">
+            <input type="text" id="destination" placeholder="Destination" class="w-full px-4 py-3 border rounded-lg mb-3">
+            <input type="number" id="budget" placeholder="Budget" class="w-full px-4 py-3 border rounded-lg mb-3">
+            <input type="number" id="days" placeholder="Days" class="w-full px-4 py-3 border rounded-lg mb-3">
+            <input type="number" id="people" placeholder="People" class="w-full px-4 py-3 border rounded-lg mb-3">
+            <button id="generatePlan" class="w-full bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 button-hover">Generate Plan</button>
+        </div>
+        
+        <div id="loadingText" class="loading mt-4">Generating your perfect travel plan... ✈️</div>
+        
+        <div id="planOutput" class="mt-6 hidden p-4 text-left bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-900">Your AI-Generated Travel Plan</h2>
+            <p id="planText" class="text-gray-800 mt-2"></p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById("startButton").addEventListener("click", function() {
+            document.getElementById("formContainer").classList.remove("hidden");
+            this.classList.add("hidden");
+        });
+
+        document.getElementById("generatePlan").addEventListener("click", function() {
+            document.getElementById("loadingText").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("loadingText").style.display = "none";
+                document.getElementById("planOutput").classList.remove("hidden");
+                
+                const plan = `<strong>Paris Travel Plan</strong><br>
+                Budget: ₹200,000<br>
+                Duration: 5 Days<br>
+                People: 3<br><br>
+                <strong>Day 1: Arrival & City Exploration</strong><br>
+                - Arrive & check-in (₹40,000 for 5 nights).<br>
+                - Visit **Eiffel Tower** (₹2,000 per person).<br>
+                - Seine River cruise (₹1,500 per person).<br>
+                - Dinner at Le Meurice (₹5,000 per person).<br><br>
+                <strong>Day 2: Art & History</strong><br>
+                - Breakfast (₹800 per person).<br>
+                - Louvre Museum visit (₹2,000 per person).<br>
+                - Explore Notre-Dame Cathedral & Montmartre.<br><br>
+                <strong>Day 3: Disneyland Paris</strong><br>
+                - Full-day Disneyland trip (₹10,000 per person).<br><br>
+                <strong>Day 4: Versailles & Shopping</strong><br>
+                - Palace of Versailles tour (₹3,000 per person).<br>
+                - Shopping at Champs-Élysées.<br><br>
+                <strong>Day 5: Local Experiences & Departure</strong><br>
+                - Parisian brunch & final souvenir shopping.<br>
+                - Flight back home.<br><br>
+                <strong>Total Cost Estimate:</strong> ₹200,000 (Premium Experience 🇫🇷✈️)`;
+                document.getElementById("planText").innerHTML = plan;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

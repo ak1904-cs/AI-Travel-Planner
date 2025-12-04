@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: url('https://wallpapers.com/images/hd/cool-simple-abstract-icons-brmsg7jvu1rtaqiy.jpg') no-repeat center center/cover;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 500px;
+        }
+        #chatbox {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            height: 350px;
+            overflow-y: auto;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            max-width: 75%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin: 5px 0;
+            word-wrap: break-word;
+            display: inline-block;
+        }
+        .user-message {
+            background: #34d399;
+            color: black;
+            align-self: flex-end;
+            text-align: right;
+        }
+        .bot-message {
+            background: #e5e7eb;
+            color: black;
+            align-self: flex-start;
+            text-align: left;
+        }
+        #userInput {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            outline: none;
+            font-size: 16px;
+        }
+        .btn {
+            width: 100%;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.5);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="glass shadow-lg text-center p-6">
+        <h1 class="text-3xl font-bold text-white">Chatbot</h1>
+        <div id="chatbox" class="mt-4"></div>
+        <input type="text" id="userInput" placeholder="Type a message...">
+        <button id="sendBtn" class="btn">Send</button>
+    </div>
+    
+    <script>
+        document.getElementById("sendBtn").addEventListener("click", sendMessage);
+        document.getElementById("userInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") sendMessage();
+        });
+
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value.trim();
+            if (userInput === "") return;
+
+            const chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += `<div class='message user-message fade-in'><strong>You:</strong> ${userInput}</div>`;
+
+            let botReply = getBotResponse(userInput.toLowerCase());
+
+            setTimeout(() => {
+                chatbox.innerHTML += `<div class='message bot-message fade-in'><strong>Bot:</strong> ${botReply}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 500);
+
+            document.getElementById("userInput").value = "";
+        }
+
+        function getBotResponse(input) {
+            const responses = {
+                "hi": "Hello! How can I assist you today?",
+                "hello": "Hey there! Need any help?",
+                "how are you": "I'm just a bot, but I'm feeling great! How about you?",
+                "what is your name": "I'm your friendly chatbot!",
+                "thank you": "You're welcome! 😊",
+                "bye": "Goodbye! Have a great day! 👋",
+
+                // Travel-related questions
+                "recommend a travel destination": "Sure! Are you looking for a beach, mountains, or a city adventure?",
+                "best time to visit europe": "Spring (April to June) and Fall (September to November) are great times to visit Europe.",
+                "budget travel tips": "Consider traveling in off-seasons, using public transport, and booking flights early for the best deals!",
+                "what are the best places to visit in india": "Some of the best places are Goa (beaches), Manali (mountains), and Jaipur (historical sites).",
+                "cheapest countries to visit": "Some budget-friendly destinations include Thailand, Vietnam, and Indonesia.",
+                "top 5 places to visit in usa": "1. Grand Canyon 🏜️  2. New York City 🏙️  3. Yellowstone National Park 🌲  4. Las Vegas 🎰  5. San Francisco 🌉",
+
+                // Default response
+                "default": "I didn't understand that. Can you try rephrasing?"
+            };
+
+            for (let key in responses) {
+                if (input.includes(key)) {
+                    return responses[key];
+                }
+            }
+            return responses["default"];
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Weather App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: url('https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg?cs=srgb&dl=pexels-pixabay-209831.jpg&fm=jpg') no-repeat center center/cover;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen">
+    <div class="bg-white bg-opacity-20 p-10 rounded-xl shadow-lg backdrop-blur-md text-center w-96">
+        <h1 class="text-2xl font-bold text-white">Weather Forecast</h1>
+        <input id="cityInput" type="text" placeholder="Enter city name" class="mt-4 p-2 w-full rounded-lg text-black"/>
+        <button onclick="getWeather()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Get Weather</button>
+        <div id="weatherResult" class="mt-4 text-white font-semibold"></div>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById("cityInput").value;
+            const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API Key
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.cod !== 200) {
+                    document.getElementById("weatherResult").innerHTML = "Location not found.";
+                    return;
+                }
+
+                const minTemp = data.main.temp_min;
+                const maxTemp = data.main.temp_max;
+                const weather = data.weather[0].description;
+
+                document.getElementById("weatherResult").innerHTML = `
+                    <p>Weather: ${weather}</p>
+                    <p>Min Temp: ${minTemp}&deg;C</p>
+                    <p>Max Temp: ${maxTemp}&deg;C</p>
+                `;
+            } catch (error) {
+                document.getElementById("weatherResult").innerHTML = "Error fetching weather data.";
+            }
+        }
+    </script>
+</body>
+</html>
